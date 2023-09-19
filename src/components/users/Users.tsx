@@ -4,7 +4,6 @@ import {UserPropsType} from "../../containers/UsersContainer";
 import s from './user.module.css'
 import {IUser} from "../types";
 
-
 const Users = (props: UserPropsType) => {
     console.log(props.users)
     if (!props.users.length) {
