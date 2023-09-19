@@ -1,31 +1,24 @@
-.App {
-  text-align: center;
-}
+.app-wrapper {
+  display: grid;
+  overflow: hidden;
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+  grid-template-areas:
+    "header header"
+    "nav content";
+  grid-template-rows: 60px 1fr;
+  grid-template-columns: 2fr 10fr;
+  grid-gap: 3px;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.app-content {
+  grid-area: content;
+  background: url("https://pibig.info/uploads/posts/2022-12/1669943313_3-pibig-info-p-kosmicheskie-oboi-oboi-3.jpg")
+  0/cover no-repeat;
+  box-sizing: border-box;
+  color: aliceblue;
+  opacity: 0.8;
+  padding: 20px;
 }
 
 @keyframes App-logo-spin {

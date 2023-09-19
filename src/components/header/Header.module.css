@@ -1,0 +1,30 @@
+.header {
+    grid-area: header;
+    background-color: #3e7f90;
+}
+
+.header img {
+    whidth: 50px;
+    height: 50px;
+}
+
+.nav {
+    grid-area: nav;
+    padding: 10px;
+    background-color: #4ecb2b;
+}
+
+.nav a {
+    display: block;
+    font-size: 25px;
+    line-height: 40px;
+    text-decoration: none;
+}
+
+.content {
+    grid-area: content;
+    background: url("https://cnv00.soundstream.media/image/aHR0cHM6Ly9zOC5ob3N0aW5na2FydGlub2suY29tL3VwbG9hZHMvaW1hZ2VzLzIwMTgvMDgvYjk3MThiZGZhMWE0YTExZThmMDM3YTYyZTQ5MWI4ZjUuanBn?w=1300&h=1300&ext=webp") 0/cover no-repeat;
+    box-sizing: border-box;
+    color: aliceblue;
+    opacity: 0.8;
+}

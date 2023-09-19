@@ -1,0 +1,15 @@
+* {
+   padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.content {
+    grid-area: content;
+    background: url("https://pibig.info/uploads/posts/2022-12/1669943313_3-pibig-info-p-kosmicheskie-oboi-oboi-3.jpg")
+    0/cover no-repeat;
+    box-sizing: border-box;
+    color: aliceblue;
+    opacity: 0.8;
+    padding: 20px;
+}

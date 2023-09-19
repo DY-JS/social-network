@@ -1,0 +1,52 @@
+.myPosts__title {
+    margin-top: 30px;
+    font-size: 30px;
+    font-weight: 600;
+    /*text-align: center;*/
+    color: yellow;
+}
+
+.myPosts__formblock {
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+    margin-top: 30px;
+}
+
+.myPosts__input {
+    min-height: 40px;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 12px 24px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: rgba(0, 0, 0, 0.6);
+    opacity: 0.9;
+    background: #F5F7FB;
+    box-shadow: 0px 5px 20px rgba(29, 33, 38, 0.03), 0px 1px 2px rgba(29, 33, 38, 0.1);
+    border-radius: 10px;
+}
+
+.myPosts__button {
+    align-self: flex-end;
+    height: 40px;
+    padding: 10px 20px;
+    background: #0066CC;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+    transition: background-color 0.3s;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.myPosts__posts {
+    margin-top: 40px;
+}
+

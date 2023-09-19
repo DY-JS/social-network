@@ -1,0 +1,53 @@
+.container {
+    padding: 10px;
+    display: flex;
+
+    /*justify-content: space-between;*/
+}
+
+.photo_and_button {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100px;
+}
+
+.photo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.user_info {
+    width: 300px;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    margin-left: 30px;
+    background: #0066CC;
+    opacity: 0.7;
+    border: 1px solid #3e7f90;
+}
+
+.button {
+    width: 80px;
+    border-radius: 5px;
+}
+
+.name_status {
+    display: flex;
+flex-direction: column;
+    justify-content: space-between;
+
+}
+
+/*h2 {*/
+/*    //text-wrap: unset;*/
+/*}*/
+
+.location {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}

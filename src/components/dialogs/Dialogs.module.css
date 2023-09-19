@@ -1,0 +1,22 @@
+.dialogs {
+    display: grid;
+    grid-template-columns: 2fr 10fr;
+}
+
+.users {
+
+}
+
+
+.user {
+padding: 0;
+}
+
+.user.active {
+    color: gold
+}
+
+
+.messages {
+
+}
