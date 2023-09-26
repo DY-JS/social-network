@@ -1,0 +1,14 @@
+.loader {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    margin: 20px auto;
+    padding: 10px;
+}
+
+.img {
+    position: absolute;
+    top: 0;
+
+
+}

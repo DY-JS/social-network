@@ -12,8 +12,8 @@ import {Provider} from "react-redux";
 import store from "./redux/store";
 import DialogsContainer from "./containers/DialogsContainer";
 import ProfileContainer from './containers/ProfileContainer';
-import Users from "./components/users/Users";
-import {UsersContainer} from "./containers/UsersContainer";
+import UsersContainer from "./containers/UsersContainer";
+import HeaderContainer from "./containers/HeaderContainer";
 
 // interface AppProps {
 //     profilePage: IProfilePage;
@@ -26,12 +26,12 @@ const App = () => {
         <BrowserRouter>
             <Provider store={store}>
             <div className="app-wrapper">
-                <Header/>
+                <HeaderContainer/>
                 <Navbar/>
                 <div className="app-content">
                     <Switch>
                         <Route path='/dialogs' render={() => <DialogsContainer /> }/>
-                        <Route path='/profile' render={() => <ProfileContainer />}/>
+                        <Route path='/profile/:userId' render={() => <ProfileContainer />}/>
                         {/*<Route path='/dialogs' component={Dialogs}/>*/}
                         {/*<Route path='/profile' component={Profile}/>*/}
                         <Route path='/news' component={News}/>

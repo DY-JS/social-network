@@ -1,8 +1,8 @@
-import {Actions, setAddPostType} from "./profileReducer";
+
 
 export const profileActionCreators = {
-    setAddPostAC: (post: string): setAddPostType => ({
-        type: Actions.ADD_POST,
-        payload: post
-    } as const)
+    // setAddPostAC: (post: string): setAddPostType => ({
+    //     type: Actions.ADD_POST,
+    //     payload: post
+    // } as const)
 }
