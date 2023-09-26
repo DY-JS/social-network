@@ -1,6 +1,5 @@
 import {IProfilePage, IPost, IUser} from "../../components/types";
 
-
 //actions
 export enum UserActions {
     SET_USERS = 'SET-USERS',
@@ -11,7 +10,7 @@ export enum UserActions {
     TOGGLE_FOLLOWING_PROGRESS = "TOGGLE_FOLLOWING_PROGRESS",
     SET_CURRENT_PAGE = "SET_CURRENT_PAGE",
     SET_TOTAL_USERS_COUNT = "SET_TOTAL_USERS_COUNT",
-    SET_IS_LOADING="SET_IS_LOADING",
+    SET_IS_LOADING = "SET_IS_LOADING",
 }
 
 //actions-creators
@@ -74,8 +73,8 @@ export type UnionUserType = AddUserACType
     | SetUsersACType
     | SetCurrentPageACType
     | SetTotalUsersCountACType
-|SetIsLoadingACType
-|ToggleFollowingProgressACType
+    | SetIsLoadingACType
+    | ToggleFollowingProgressACType
 
 const initialState: UserStateType = {
     users: [],
@@ -122,9 +121,9 @@ const usersReducer = (state: UserStateType = initialState, action: UnionUserType
         case UserActions.TOGGLE_FOLLOWING_PROGRESS:
             return {
                 ...state,
-                followingInProgress: action.isLoading?
+                followingInProgress: action.isLoading ?
                     [...state.followingInProgress, action.userId]
-                    : state.followingInProgress.filter(id => id !==action.userId)
+                    : state.followingInProgress.filter(id => id !== action.userId)
             };
         case UserActions.SET_CURRENT_PAGE:
             return {

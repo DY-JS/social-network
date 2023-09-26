@@ -18,8 +18,10 @@ type UsersPropsType = {
     followingInProgress: number[]
 }
 //FUnctional Component
-const Users = ({follow, unFollow, totalUsersCount, pageSize, currentPage, users, onChangePage,
-                   toggleFollowingProgress, followingInProgress}: UsersPropsType) => {
+const Users = ({
+                   follow, unFollow, totalUsersCount, pageSize, currentPage, users, onChangePage,
+                   toggleFollowingProgress, followingInProgress
+               }: UsersPropsType) => {
     console.log(followingInProgress)
     const makeUnFollowRequest = (userId: number) => {
         // axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${userId}`,
@@ -91,13 +93,13 @@ const Users = ({follow, unFollow, totalUsersCount, pageSize, currentPage, users,
                             ? <button
                                 onClick={() => makeUnFollowRequest(u.id)}
                                 className={s.button}
-                                disabled={followingInProgress?.some(id => id=== u.id)}
+                                disabled={followingInProgress?.some(id => id === u.id)}
                             >UNFOLLOW
                             </button>
                             : <button
                                 onClick={() => makeFollowRequest(u.id)}
                                 className={s.button}
-                                disabled={followingInProgress?.some(id => id=== u.id)}
+                                disabled={followingInProgress?.some(id => id === u.id)}
                             >FOLLOW
                             </button>
                         }
@@ -119,92 +121,3 @@ const Users = ({follow, unFollow, totalUsersCount, pageSize, currentPage, users,
 }
 
 export default Users;
-
-
-// class Users extends React.Component<any, UserPropsType> {
-//
-//     componentDidMount() {
-//         const {pageSize, setUsers, seTotalUsersCount, currentPage} = this.props
-//         if (!this.props.users.length) {
-//             axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${currentPage}&count=${pageSize}`)
-//                 .then(responce => {
-//                     setUsers(responce.data.items)
-//                     seTotalUsersCount(responce.data.totalCount)
-//                 })
-//         }
-//     }
-//
-//     onChangePage = (pageNumber: number) => {
-//         const {pageSize, setCurrentPage} = this.props
-//         setCurrentPage(pageNumber)
-//         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${pageSize}`)
-//             .then(responce => this.props.setUsers(responce.data.items))
-//     }
-//
-//     render() {
-//         const {pageSize, totalUsersCount, currentPage, setCurrentPage} = this.props
-//         let totalPagesCount = Math.ceil(totalUsersCount / pageSize)
-//         //console.log("a ",Array.from(Array(10).keys()))
-//         totalPagesCount = totalPagesCount > 20 ? 20 : totalPagesCount
-//         let pages = []
-//         for (let i = 0; i < totalPagesCount; i++) {
-//             pages.push(i + 1)
-//         }
-//
-//         return (
-//             <div>
-//                 <div>
-//                     {pages.map(p => (
-//                         <span
-//                             className={currentPage === p ? `${s.selectedPage}` : `${s.page}`}
-//                             key={p}
-//                             onClick={() => this.onChangePage(p)}
-//                         >
-//                             {p}
-//                         </span>
-//                     ))}
-//                 </div>
-//
-//                 {this.props.users?.map((u: IUser) =>
-//                     <div key={u.id} className={s.container}>
-//                         <div className={s.photo_and_button}>
-//                             <img className={s.photo}
-//                                  src={
-//                                      u.photos.small
-//                                          ? u.photos.small
-//                                          : 'https://m.gordonua.com/img/article/15924/50_tn.jpg?v1643214151'
-//                                  }
-//                                  alt={"avatar"}/>
-//                             {u.followed
-//                                 ? <button
-//                                     onClick={() => this.props.unFollow(u.id)}
-//                                     className={s.button}
-//                                 >UNFOLLOW
-//                                 </button>
-//                                 : <button
-//                                     onClick={() => this.props.follow(u.id)}
-//                                     className={s.button}
-//                                 >FOLLOW
-//                                 </button>
-//
-//
-//                             }
-//                         </div>
-//                         <div className={s.user_info}>
-//                             <div className={s.name_status}>
-//                                 <h2>{u.name}</h2>
-//                                 <span>{u.status}</span>
-//                             </div>
-//                             <div className={s.location}>
-//                                 {/*<span>{u.location.city}</span>*/}
-//                                 {/*<span>{u.location.country}</span>*/}
-//                             </div>
-//
-//                         </div>
-//
-//
-//                     </div>)}
-//             </div>
-//         );
-//     }
-// };
