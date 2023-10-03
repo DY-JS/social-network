@@ -24,7 +24,6 @@ export const usersApi = {
     }
 }
 
-
 export type UserResponseType = {
     items: IUser[],
     totalCount: number,

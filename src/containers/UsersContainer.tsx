@@ -1,19 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {AppStateType} from "../redux/store";
-import {
-    addUserAC,
-    followUserAC,
+import { addUserAC, followTC, getUsersTC,
     setCurrentPageAC, setIsLoadingAC, setTotalUsersCountAC,
-    setUsersAC, toggleFollowingProgressAC,
-    unFollowUserAC,
-    UserStateType
+    setUsersAC, unFollowTC,
 } from "../redux/users/usersReducer";
 import {Dispatch} from "redux";
 import {IUser} from "../components/types";
 import Users from "../components/users/Users";
-import axios from "axios";
-import s from "src/components/users/user.module.css";
 import Loader from "../components/Loader/Loader";
 import {UserResponseType, usersApi} from "../api/api";
 
@@ -22,17 +16,9 @@ import {UserResponseType, usersApi} from "../api/api";
 //UsersContainer
 class UsersContainer extends React.Component<any, UserPropsType> {
     componentDidMount() {
-        const {pageSize, setUsers, setTotalUsersCount, currentPage, setIsLoading} = this.props
-        setIsLoading(true)
+        const {pageSize, currentPage, getUsersTC} = this.props
         if (!this.props.users.length) {
-            usersApi.getUsers(currentPage, pageSize)
-                .then((data: UserResponseType ) => {
-                    setUsers(data.items)
-                    setTotalUsersCount(data.totalCount)
-                    setIsLoading(false)
-                })
-        } else if (this.props.users.length) {
-            setIsLoading(false)
+           getUsersTC(currentPage, pageSize)
         }
     }
 
@@ -49,22 +35,21 @@ class UsersContainer extends React.Component<any, UserPropsType> {
     }
 
     render() {
-        const {pageSize, totalUsersCount, currentPage, users, follow,
-            unFollow, isLoading, toggleFollowingProgress, followingInProgress} = this.props
-        console.log(isLoading)
+        const {pageSize, totalUsersCount, currentPage, users,
+            isLoading, followingInProgress, followTC} = this.props
+        console.log(users)
         return (
             <>
                 {isLoading ? <Loader/> : null}
                 <Users
                     users={users}
-                    follow={follow}
-                    unFollow={unFollow}
                     onChangePage={this.onChangePage}
                     totalUsersCount={totalUsersCount}
                     pageSize={pageSize}
                     currentPage={currentPage}
                     followingInProgress={followingInProgress}
-                    toggleFollowingProgress={toggleFollowingProgress}
+                    followTC={followTC}
+                    unFollowTC={unFollowTC}
                 />
             </>
 
@@ -83,14 +68,13 @@ type mapStateToPropsType = {
 }
 
 type mapDispatchToPropsType = {
-    setIsLoading: (isLoading: boolean) => void
     setUsers: (users: IUser[]) => void,
     addUser: (user: IUser) => void,
-    follow: (userId: number) => void,
-    unFollow: (userId: number) => void
     setCurrentPage: (currentPage: number) => void
     setTotalUsersCount: (usersCount: number) => void
-    toggleFollowingProgress: (isLoading: boolean, userId: number) => void
+    getUsersTC: (currentPage: number, pageSize: number) => void, //thunk-creator
+    followTC: (userId: number) => void
+    unFollowTC: (userId: number) => void
 }
 
 export type UserPropsType = mapStateToPropsType & mapDispatchToPropsType
@@ -125,14 +109,13 @@ const mapStateToProps = (state: AppStateType): mapStateToPropsType => (
 
 //2-й вар
 const dispatchers = {  //аналог функции mapDispatchToProps, кот по итогу возвр такой объект
-    setIsLoading: setIsLoadingAC,
     setUsers: setUsersAC,
     addUser: addUserAC,
-    follow: followUserAC,
-    unFollow: unFollowUserAC,
     setCurrentPage: setCurrentPageAC,
     setTotalUsersCount: setTotalUsersCountAC,
-    toggleFollowingProgress: toggleFollowingProgressAC
+    getUsersTC: getUsersTC, //thunk-creator
+    followTC: followTC,
+    unFollowTC: unFollowTC
 }
 
 //UsersContainer - в него передаются props(всё из mapStateToProps и mapDispatchToProps)

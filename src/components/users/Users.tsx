@@ -1,60 +1,26 @@
 import React from 'react';
-import axios from 'axios';
-import {UserPropsType} from "../../containers/UsersContainer";
 import s from './user.module.css'
 import {IUser} from "../types";
 import {NavLink} from 'react-router-dom';
-import {FollowUserResponseType, usersApi} from "../../api/api";
+import {useDispatch} from "react-redux";
 
 type UsersPropsType = {
-    users: IUser[]
-    follow: (userId: number) => void,
-    unFollow: (userId: number) => void
+    users: IUser[],
     onChangePage: (pageNumber: number) => void
-    toggleFollowingProgress: (isLoading: boolean, userId: number) => void
     totalUsersCount: number
     pageSize: number
     currentPage: number
     followingInProgress: number[]
+    followTC: (userId: number) => void,
+    unFollowTC: (userId: number) => void
 }
 //FUnctional Component
 const Users = ({
-                   follow, unFollow, totalUsersCount, pageSize, currentPage, users, onChangePage,
-                   toggleFollowingProgress, followingInProgress
+                   totalUsersCount, pageSize, currentPage, users, onChangePage,
+                   followingInProgress, followTC, unFollowTC
                }: UsersPropsType) => {
-    console.log(followingInProgress)
-    const makeUnFollowRequest = (userId: number) => {
-        // axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${userId}`,
-        //     {
-        //         withCredentials: true
-        //     })
-        //setIsLoading(true)
-        toggleFollowingProgress(true, userId)
-        usersApi.unFollowUserById(userId)
-            .then((data: FollowUserResponseType) => {
-                    if (data.resultCode === 0) {
-                        unFollow(userId)
-                        toggleFollowingProgress(false, userId)
-                    }
-                }
-            )
-    }
 
-    const makeFollowRequest = (userId: number) => {
-        //setIsLoading(true)
-        // axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${userId}`, {}, {withCredentials: true},
-        //     )
-        toggleFollowingProgress(true, userId)
-        usersApi.followUserById(userId)
-            .then((data: FollowUserResponseType) => {
-                    if (data.resultCode === 0) {
-                        follow(userId)
-                        toggleFollowingProgress(false, userId)
-                    }
-                }
-            )
-    }
-
+    const dispatch  = useDispatch()
     let totalPagesCount = Math.ceil(totalUsersCount / pageSize)
     //console.log("a ",Array.from(Array(10).keys()))
     totalPagesCount = totalPagesCount > 20 ? 20 : totalPagesCount
@@ -91,13 +57,13 @@ const Users = ({
                         </NavLink>
                         {u.followed
                             ? <button
-                                onClick={() => makeUnFollowRequest(u.id)}
+                                onClick={() => dispatch(unFollowTC(u.id))}
                                 className={s.button}
                                 disabled={followingInProgress?.some(id => id === u.id)}
                             >UNFOLLOW
                             </button>
                             : <button
-                                onClick={() => makeFollowRequest(u.id)}
+                                onClick={() => followTC(u.id)}
                                 className={s.button}
                                 disabled={followingInProgress?.some(id => id === u.id)}
                             >FOLLOW

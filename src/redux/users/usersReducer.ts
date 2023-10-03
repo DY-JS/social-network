@@ -1,4 +1,7 @@
 import {IProfilePage, IPost, IUser} from "../../components/types";
+import {Dispatch} from "redux";
+import {FollowUserResponseType, UserResponseType, usersApi} from "../../api/api";
+// import {UserResponseType, usersApi} from "src/api/api";
 
 //actions
 export enum UserActions {
@@ -55,6 +58,44 @@ export const toggleFollowingProgressAC = (isLoading: boolean, userId: number) =>
     userId
 } as const)
 
+
+//thunks
+export const getUsersTC = (currentPage: number, pageSize: number ) => (dispatch: Dispatch) => {
+        dispatch(setIsLoadingAC(true))
+        usersApi.getUsers(currentPage, pageSize)
+            .then((data: UserResponseType ) => {
+                dispatch(setUsersAC(data.items))
+                dispatch(setTotalUsersCountAC(data.totalCount))
+                dispatch(setIsLoadingAC(false))
+            })
+            //.finally(() => dispatch(setIsLoadingAC(false)))
+
+}
+
+export const followTC = (userId: number ) => (dispatch: Dispatch) => {
+    dispatch(toggleFollowingProgressAC(true, userId))
+    usersApi.followUserById(userId)
+        .then((data: FollowUserResponseType) => {
+                if (data.resultCode === 0) {
+                    dispatch(followUserAC(userId))
+                    dispatch(toggleFollowingProgressAC(false, userId))
+                }
+            }
+        )
+}
+
+export const unFollowTC = (userId: number ) => (dispatch: Dispatch) => {
+    dispatch(toggleFollowingProgressAC(true, userId))
+    usersApi.unFollowUserById(userId)
+        .then((data: FollowUserResponseType) => {
+            console.log('yes')
+                if (data.resultCode === 0) {
+                    dispatch(unFollowUserAC(userId))
+                    dispatch(toggleFollowingProgressAC(false, userId))
+                }
+            }
+        )
+}
 
 // types
 export type SetIsLoadingACType = ReturnType<typeof setIsLoadingAC>
