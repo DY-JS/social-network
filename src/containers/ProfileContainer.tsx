@@ -1,41 +1,35 @@
-import {connect, useDispatch, useSelector} from 'react-redux';
-import {profileActionCreators} from "../redux/profile/profileActionCreators";
-import {useTypedSelector} from "../hooks/useTypedSelector";
+import {connect} from 'react-redux';
 import Profile from "../components/profile/Profile";
-import {IPost, IUser, IUserProfile} from "../components/types";
-import React from "react";
-import axios from "axios";
+import {IPost, IUserProfile} from "../components/types";
+import React, {ComponentType} from "react";
 import {AppStateType} from "../redux/store";
-import {addPostAC, setUserProfileAC} from "../redux/profile/profileReducer";
-import {withRouter} from "react-router-dom";
+import {addPostAC, getUserProfileTC, getUserStatusTC, updateUserStatusTC} from "../redux/profile/profileReducer";
+import {RouteComponentProps, withRouter} from "react-router-dom";
+import authRedirectForClass from "../HOC/AuthRedirectForClass";
+import {compose} from "redux";
 
 //Container
-class ProfileContainer extends React.Component<any, ProfilePropsType> {
-    componentDidMount() {
-        let userId = this.props.match.params.userId || 2 //получили userId из параметров адресной строки
+class ProfileContainer extends React.Component<any, RouteComponentProps<any> & ProfilePropsType> {
 
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`)
-            .then(response => {
-                this.props.setProfileUserData(response.data)
-            })
+    componentDidMount() {
+        const {getUserProfile, getUserStatus} = this.props
+        let userId = this.props.match.params.userId || 2 //получили userId из параметров адресной строки
+        getUserProfile(userId)
+        getUserStatus(userId)
     }
 
-
     render() {
-        const {posts, userProfile, setProfileUserData, addPost} = this.props
+        const {posts, userProfile, addPost, status, isAuth, updateUserStatus} = this.props
         return (
             <div>
-                {/*<div className={styles.content}>*/}
-                {/*<Profile {...this.props}/>*/}
                 <Profile
+                    isAuth={isAuth}
                     posts={posts}
-                    setProfileUserData={setProfileUserData}
                     userProfile={userProfile}
                     addPost={addPost}
+                    status={status}
+                    updateUserStatus={updateUserStatus}
                 />
-
-                {/*<MyPosts posts={posts} sendMessage={sendMessage}/>*/}
-                {/*</div>*/}
             </div>
         );
     }
@@ -45,11 +39,14 @@ class ProfileContainer extends React.Component<any, ProfilePropsType> {
 type mapStateToPropsType = {
     posts: IPost[],
     userProfile: IUserProfile | null
+    status: string
 }
 
 type mapDispatchToPropsType = {
-    setProfileUserData: (profile: IUserProfile | null) => void
+    getUserProfile: (userId: number) => void
     addPost: (post: string) => void
+    getUserStatus: (userId: number) => void
+    updateUserStatus: (status: string) => void
 }
 
 export type ProfilePropsType = mapStateToPropsType & mapDispatchToPropsType
@@ -58,19 +55,31 @@ export type ProfilePropsType = mapStateToPropsType & mapDispatchToPropsType
 let mapStateToProps = (state: AppStateType): mapStateToPropsType => (
     {
         posts: state.profile.posts,
-        userProfile: state.profile.userProfile
+        userProfile: state.profile.userProfile,
+        status: state.profile.status
     })
 
 const dispatchers = { //аналог функции mapDispatchToProps, кот по итогу такой объект
-    setProfileUserData: setUserProfileAC,
-    addPost: addPostAC
+    getUserProfile: getUserProfileTC,
+    addPost: addPostAC,
+    getUserStatus: getUserStatusTC,
+    updateUserStatus: updateUserStatusTC
 }
 
-//withRouter & connect
-const withRouterProfileContainer = withRouter(ProfileContainer) //чтобы достать параметр userId
+//обернули в withRouter
+//const withRouterProfileContainer = withRouter(ProfileContainer)//чтобы достать параметр userId
+//обернули в WithAuthRedirect
+// const withRedirectComponent = authRedirectForClass(withRouterProfileContainer) //чтобы проверить авторизацию и отправить на логин
+// export default connect(mapStateToProps, dispatchers)(withRedirectComponent)
 
-export default connect(mapStateToProps, dispatchers)(withRouterProfileContainer)
+// !!! ЗАМЕНИЛИ ОБЁРТКИ withRouter И WithAuthRedirect НА COMPOSE (COMPOSE делает фабрику из HOCов)
+const composeProfile = compose<RouteComponentProps<any> & ComponentType & ProfilePropsType>(
+    connect(mapStateToProps, dispatchers),
+    withRouter,
+    authRedirectForClass
+)
 
+export default composeProfile(ProfileContainer)
 
 // "aboutMe": "я круто чувак 1001%",
 //     "contacts": {
@@ -91,19 +100,3 @@ export default connect(mapStateToProps, dispatchers)(withRouterProfileContainer)
 //     "small": "https://social-network.samuraijs.com/activecontent/images/users/2/user-small.jpg?v=0",
 //         "large": "https://social-network.samuraijs.com/activecontent/images/users/2/user.jpg?v=0"
 // }
-
-
-// const ProfileContainer = () => {
-//     const posts: IPost[] = useTypedSelector((state) => state.profile.posts);
-//     //const dialogsPage = useSelector((state: RootState) => state.dialogsReducer);
-//     const dispatch = useDispatch();
-//
-//     const sendMessage = (post: string) => {
-//        console.log(post)
-//         dispatch(profileActionCreators.setAddPostAC(post));
-//     };
-//
-//     return  <Profile posts={posts} sendMessage={sendMessage} />;
-// }
-// export default ProfileContainer;
-

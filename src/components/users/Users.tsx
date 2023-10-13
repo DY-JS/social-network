@@ -11,16 +11,15 @@ type UsersPropsType = {
     pageSize: number
     currentPage: number
     followingInProgress: number[]
-    followTC: (userId: number) => void,
-    unFollowTC: (userId: number) => void
+    follow: (userId: number) => void,
+    unFollow: (userId: number) => void
 }
 //FUnctional Component
 const Users = ({
                    totalUsersCount, pageSize, currentPage, users, onChangePage,
-                   followingInProgress, followTC, unFollowTC
+                   followingInProgress, follow, unFollow
                }: UsersPropsType) => {
 
-    const dispatch  = useDispatch()
     let totalPagesCount = Math.ceil(totalUsersCount / pageSize)
     //console.log("a ",Array.from(Array(10).keys()))
     totalPagesCount = totalPagesCount > 20 ? 20 : totalPagesCount
@@ -57,13 +56,13 @@ const Users = ({
                         </NavLink>
                         {u.followed
                             ? <button
-                                onClick={() => dispatch(unFollowTC(u.id))}
+                                onClick={() => unFollow(u.id)}
                                 className={s.button}
                                 disabled={followingInProgress?.some(id => id === u.id)}
                             >UNFOLLOW
                             </button>
                             : <button
-                                onClick={() => followTC(u.id)}
+                                onClick={() => follow(u.id)}
                                 className={s.button}
                                 disabled={followingInProgress?.some(id => id === u.id)}
                             >FOLLOW

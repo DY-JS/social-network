@@ -1,9 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {AppStateType} from "../redux/store";
-import { addUserAC, followTC, getUsersTC,
-    setCurrentPageAC, setIsLoadingAC, setTotalUsersCountAC,
-    setUsersAC, unFollowTC,
+import {
+    addUserAC, followTC, getUsersTC,
+    setCurrentPageAC, setTotalUsersCountAC,
+    setUsersAC, unFollowTC
 } from "../redux/users/usersReducer";
 import {Dispatch} from "redux";
 import {IUser} from "../components/types";
@@ -22,10 +23,10 @@ class UsersContainer extends React.Component<any, UserPropsType> {
         }
     }
 
-    componentWillUnmount() {
-       const {setIsLoading} = this.props
-        setIsLoading(false)
-    }
+    // componentWillUnmount() {
+    //    const {setIsLoading} = this.props
+    //     setIsLoading(false)
+    // }
 
     onChangePage = (pageNumber: number) => {
         const {pageSize, setCurrentPage} = this.props
@@ -35,8 +36,8 @@ class UsersContainer extends React.Component<any, UserPropsType> {
     }
 
     render() {
-        const {pageSize, totalUsersCount, currentPage, users,
-            isLoading, followingInProgress, followTC} = this.props
+        const {pageSize, totalUsersCount, currentPage, users, follow, unFollow,
+            isLoading, followingInProgress} = this.props
         console.log(users)
         return (
             <>
@@ -48,8 +49,8 @@ class UsersContainer extends React.Component<any, UserPropsType> {
                     pageSize={pageSize}
                     currentPage={currentPage}
                     followingInProgress={followingInProgress}
-                    followTC={followTC}
-                    unFollowTC={unFollowTC}
+                    follow={follow}
+                    unFollow={unFollow}
                 />
             </>
 
@@ -73,8 +74,8 @@ type mapDispatchToPropsType = {
     setCurrentPage: (currentPage: number) => void
     setTotalUsersCount: (usersCount: number) => void
     getUsersTC: (currentPage: number, pageSize: number) => void, //thunk-creator
-    followTC: (userId: number) => void
-    unFollowTC: (userId: number) => void
+    follow: (userId: number) => void
+    unFollow: (userId: number) => void
 }
 
 export type UserPropsType = mapStateToPropsType & mapDispatchToPropsType
@@ -114,8 +115,8 @@ const dispatchers = {  //аналог функции mapDispatchToProps, кот 
     setCurrentPage: setCurrentPageAC,
     setTotalUsersCount: setTotalUsersCountAC,
     getUsersTC: getUsersTC, //thunk-creator
-    followTC: followTC,
-    unFollowTC: unFollowTC
+    follow: followTC,
+    unFollow: unFollowTC
 }
 
 //UsersContainer - в него передаются props(всё из mapStateToProps и mapDispatchToProps)

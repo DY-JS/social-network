@@ -6,8 +6,8 @@ export interface IPost {
 
 export interface IProfilePage {
     posts: IPost[],
-    userProfile: IUserProfile | null
-
+    userProfile: IUserProfile | null,
+    status: string
 }
 
 export interface IUser {
@@ -44,6 +44,12 @@ export interface IUserProfile {
         small: string | null,
         large: string | null,
     }
+}
+
+export type ResponseResultType = {
+    resultCode: number
+    messages: String[],
+    data: Object
 }
 
 // export interface IRootState {

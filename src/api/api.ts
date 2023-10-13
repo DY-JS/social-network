@@ -1,5 +1,5 @@
 import axios from "axios";
-import {IUser} from "../components/types";
+import {IUser, ResponseResultType} from "../components/types";
 
 const  instance = axios.create({
  withCredentials: true,
@@ -8,7 +8,7 @@ const  instance = axios.create({
 })
 
 export const usersApi = {
-    getUsers (page = 1, pageSize = 5) {
+    getUsers(page = 1, pageSize = 5) {
         return instance.get<UserResponseType>(`users?page=${page}&${pageSize}`)
             .then(response => response.data)
     },
@@ -21,9 +21,33 @@ export const usersApi = {
     unFollowUserById(userId: number) {
         return instance.delete<FollowUserResponseType>(`follow/${userId}`)
             .then(response => response.data)
+    },
+}
+
+export const profileApi = {
+    getUsersProfile(userId: number) {
+        return instance.get(`profile/${userId}`)
+    },
+
+    getUsersStatus(userId: number) {
+        return instance.get<string>(`profile/status/${userId}`)
+    },
+
+    updateStatus(status: string) {
+        const body: {status: string} = { status }
+        return instance.put<ResponseResultType>(`profile/status`, body)
+    }
+
+}
+
+export const authApi = {
+    me() {
+        return instance.get(`auth/me`)
     }
 }
 
+
+//types
 export type UserResponseType = {
     items: IUser[],
     totalCount: number,
